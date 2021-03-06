@@ -10,5 +10,5 @@ export default {
     mutations,
     actions,
     state
-  };
+  }
   
