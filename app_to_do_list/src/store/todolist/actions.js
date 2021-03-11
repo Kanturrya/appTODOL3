@@ -27,3 +27,4 @@ export function addList(context, newList) {
         context.commit('ADD_LIST', [idList, newList]);
     }
 }
+
