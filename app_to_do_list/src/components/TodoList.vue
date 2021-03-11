@@ -1,31 +1,48 @@
 <template>
-  <div class="todolist">
 
-    <h4>{{getTodolistFromId(idList).name}}</h4>
+  <div class="newList" v-if="idList === '0'">
+      <input type="text" v-model="newList" placeholder="Ajouter une liste">
+      <router-link :to="'/home/' + getSize">
+        <button @click="addList(newList)">Ajouter</button>
+      </router-link>
+  </div>
+
+
+  <div class="todolist" v-else-if="parseInt(idList) <= getSize">
+
+    <h4>{{getTodolistFromId(parseInt(idList)).name}}</h4>
 
     <div class="newTodo">
       <input type="text" v-model="newTodo" placeholder="Ajouter une tâche">
-      <button @click="addTodo([idList, newTodo])">Ajouter</button>
+      <button @click="addTodo([parseInt(idList), newTodo])">Ajouter</button>
     </div>
 
     <div class="todos">
       <ul>
-        <li v-for="todo in filteredTodos(idList, filter)" v-bind:key="todo">
+        <li v-for="todo in filteredTodos(parseInt(idList), filter)" v-bind:key="todo">
           <input type="checkbox" id="todo.name" v-model="todo.isCompleted">
           <label for="todo.name">{{todo.name}}</label>
-          <button @click="deleteTodo([idList, todo.id])">Supprimer</button>
+          <button @click="deleteTodo([parseInt(idList), todo.id])">Supprimer</button>
           </li>
         </ul>
       </div>
 
     <div class="filterButtons">
-      <label type="text">{{countUndoneTodos(idList)}} tâche(s) à faire </label>
+      <label type="text">{{countUndoneTodos(parseInt(idList))}} tâche(s) à faire </label>
       <button @click="change('all')"> Toutes </button>
       <button @click="change('unchecked')"> À faire </button>
       <button @click="change('checked')"> Faites </button>
     </div>
 
   </div>
+
+
+  <div class="Erreur" v-else>
+
+    <p>La liste d'identifiant {{idList}} n'existe pas</p>
+
+  </div>
+
 </template>
 
 <script>
@@ -40,14 +57,21 @@ export default defineComponent({
   data() {
     return {
       newTodo: '',
+      newList: '',
       filter: 'all',
-      idList: 1 // à remplacer plus tard avec un props
+    }
+  },
+
+  props: {
+    idList: {
+        type: String,
+        required: true,
     }
   },
 
   methods: {
 
-    ...mapMutations("todolist", ["deleteTodo", "addTodo"]),
+    ...mapMutations("todolist", ["deleteTodo", "addTodo", "addList"]),
 
     change(status) {
       this.filter = status;
@@ -57,7 +81,7 @@ export default defineComponent({
 
   computed: {
 
-    ...mapGetters("todolist", ["filteredTodos", "countUndoneTodos", "getTodolistFromId"]),
+    ...mapGetters("todolist", ["getSize", "filteredTodos", "countUndoneTodos", "getTodolistFromId"]),
 
   },
 

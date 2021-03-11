@@ -3,12 +3,13 @@
     <nav class="navigation" role="navigation">
       <ul class="navigation-list">
         <li class="navigation-item" v-for="todo in getAll" v-bind:key="todo.id">
-          <p class="navigation-link" v-on:click="selectList(todo.id)">
-            {{ todo.name }} ( {{countUndoneTodos(todo.id)}} )
-          </p>
+          <router-link :to="'/home/' + todo.id" class="navigation-link">{{ todo.name }} ( {{countUndoneTodos(todo.id)}} )</router-link>
         </li>
       </ul>
     </nav>
+    <router-link :to="'/home/0'">
+      <button>Ajouter une liste</button>
+    </router-link>
   </aside>
 </template>
 
@@ -24,7 +25,8 @@ export default {
 
   methods: {
     selectList: function (id) {
-      this.$emit('change-selected-list', id)
+   //   this.$emit('change-selected-list', id)
+     console.log("select liste : " + id)
     },
   },
 

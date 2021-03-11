@@ -13,6 +13,12 @@ export function addTodo (state, [idList, newTodo]) {
     }
 }
 
-export function test(state, idList) {
-    console.log("TEST : " + state.todolists[idList - 1].name);
+export function addList (state, newList) {
+    let valueId;
+	if (state.todolists.length > 0) {
+		valueId = state.todolists[state.todolists.length - 1].id + 1;
+	} else {
+		valueId = 1;
+	}
+	state.todolists.push({id: valueId, name: newList, todos: []});
 }

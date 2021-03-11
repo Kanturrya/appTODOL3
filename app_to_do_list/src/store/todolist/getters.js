@@ -1,5 +1,5 @@
 export function getSize(state) {
-    return state.todolists.size;
+    return state.todolists.length;
 }
 
 export function getAll(state) {
