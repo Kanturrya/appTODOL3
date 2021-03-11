@@ -3,18 +3,18 @@
   <div class="newList" v-if="idList === '0'">
       <input type="text" v-model="newList" placeholder="Ajouter une liste">
       <router-link :to="'/home/' + getSize">
-        <button @click="addList(newList)">Ajouter</button>
+        <button @click="eventAddList">Ajouter</button>
       </router-link>
   </div>
 
 
-  <div class="todolist" v-else-if="parseInt(idList) <= getSize">
+  <div class="todolist" v-else-if="listExists">
 
     <h4>{{getTodolistFromId(parseInt(idList)).name}}</h4>
 
     <div class="newTodo">
       <input type="text" v-model="newTodo" placeholder="Ajouter une tâche">
-      <button @click="addTodo([parseInt(idList), newTodo])">Ajouter</button>
+      <button @click="eventAddTodo">Ajouter</button>
     </div>
 
     <div class="todos">
@@ -48,7 +48,7 @@
 <script>
 
 import { defineComponent } from 'vue';
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default defineComponent({
 
@@ -71,17 +71,31 @@ export default defineComponent({
 
   methods: {
 
-    ...mapMutations("todolist", ["deleteTodo", "addTodo", "addList"]),
+    ...mapActions("todolist", ["deleteTodo", "addTodo", "addList"]),
 
     change(status) {
       this.filter = status;
     },
 
+    eventAddTodo() {
+      this.addTodo([parseInt(this.idList), this.newTodo]);
+      this.newTodo = "";
+    },
+
+    eventAddList() {
+      this.addList(this.newList);
+      this.newList = "";
+    }
+
   },
 
   computed: {
 
-    ...mapGetters("todolist", ["getSize", "filteredTodos", "countUndoneTodos", "getTodolistFromId"]),
+    ...mapGetters("todolist", ["getSize", "filteredTodos", "countUndoneTodos", "getTodolistFromId", "getIdLastList"]),
+
+    listExists: function() {
+      return parseInt(this.idList) <= this.getIdLastList && parseInt(this.idList) > 0;
+    }
 
   },
 

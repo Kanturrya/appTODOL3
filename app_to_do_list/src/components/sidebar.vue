@@ -25,7 +25,6 @@ export default {
 
   methods: {
     selectList: function (id) {
-   //   this.$emit('change-selected-list', id)
      console.log("select liste : " + id)
     },
   },

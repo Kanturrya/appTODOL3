@@ -2,23 +2,14 @@ export function SET_COMPLETED(state, val) {
     state.todos.isCompleted = val;
 }
 
-export function deleteTodo (state, [idList, idTodo]) {
-    state.todolists[idList - 1].todos.splice(idTodo - 1, 1);
+export function DELETE_TODO(state, [indexList, indexTodo]) {
+    state.todolists[indexList].todos.splice(indexTodo, 1);
 }
 
-export function addTodo (state, [idList, newTodo]) {
-    // Si la nouvelle todo est vide on ne l'ajoute pas
-    if (! newTodo == "") {
-        state.todolists[idList - 1].todos.push({id: idList, name: newTodo, isCompleted: false});
-    }
+export function ADD_TODO(state, [indexList, idTodo, newTodo]) {
+    state.todolists[indexList].todos.push({id: idTodo, name: newTodo, isCompleted: false});
 }
 
-export function addList (state, newList) {
-    let valueId;
-	if (state.todolists.length > 0) {
-		valueId = state.todolists[state.todolists.length - 1].id + 1;
-	} else {
-		valueId = 1;
-	}
-	state.todolists.push({id: valueId, name: newList, todos: []});
+export function ADD_LIST (state, [idList, newList]) {
+	state.todolists.push({id: idList, name: newList, todos: []});
 }
