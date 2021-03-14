@@ -1,20 +1,26 @@
 import axios from "axios";
 
 export const register = ({commit}, nameAccount, emailAccount, passwordAccount) => {
+    console.log(nameAccount, emailAccount, passwordAccount);
     axios.post(`http://138.68.74.39/api/register`, {nameAccount, emailAccount, passwordAccount})
     .then(response => {
         console.log(response.data);
         commit('SET_TOKEN', response.data.token);
         localStorage.setItem('token', response.data.token);
+    }).catch((error) => {
+        console.log(error.response);
     });
 }
 
 export const login = ({commit}, emailAccount, passwordAccount) => {
+    
     axios.post(`http://138.68.74.39/api/login`, {emailAccount, passwordAccount})
     .then(response => {
         console.log(response.data);
         commit('SET_TOKEN', response.data.token);
         localStorage.setItem('token', response.data.token);
+    }).catch((error) => {
+        console.log(error.response);
     });
 }
 
