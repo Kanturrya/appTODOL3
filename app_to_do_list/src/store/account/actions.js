@@ -1,26 +1,29 @@
 import axios from "axios";
+import { router } from '/src/router/index';
 
-export const register = ({commit}, nameAccount, emailAccount, passwordAccount) => {
-    console.log(nameAccount, emailAccount, passwordAccount);
-    axios.post(`http://138.68.74.39/api/register`, {nameAccount, emailAccount, passwordAccount})
+export const register = ({commit}, user) => {
+    console.log(user);
+    axios.post('http://138.68.74.39/api/register', user)
     .then(response => {
         console.log(response.data);
         commit('SET_TOKEN', response.data.token);
         localStorage.setItem('token', response.data.token);
+        router.push({name: 'HomeBase'});
     }).catch((error) => {
-        console.log(error.response);
+        console.log(error);
     });
 }
 
-export const login = ({commit}, emailAccount, passwordAccount) => {
+export const login = ({commit}, user) => {
     
-    axios.post(`http://138.68.74.39/api/login`, {emailAccount, passwordAccount})
-    .then(response => {
+    axios.post(`http://138.68.74.39/api/login`, user)
+    .then(response => { 
         console.log(response.data);
         commit('SET_TOKEN', response.data.token);
         localStorage.setItem('token', response.data.token);
+        router.push({name: 'HomeBase'});
     }).catch((error) => {
-        console.log(error.response);
+        console.log(error);
     });
 }
 

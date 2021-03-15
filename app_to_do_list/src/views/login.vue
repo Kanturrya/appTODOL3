@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>Connexion</h1>
-    <input type="text" placeholder="Mail" v-model="email" />
-    <input type="text" placeholder="Mot de passe" v-model="password" />
+    <input type="text" placeholder="Mail" v-model="this.user.email" />
+    <input type="text" placeholder="Mot de passe" v-model="this.user.password" />
     <button @click="eventLogin">Connexion</button>
     <button @click="eventRegister">S'inscrire</button>
     <p v-if="msg">{{ msg }}</p>
@@ -14,9 +14,11 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-        pseudo: "toto",
-        email: "toto@toto.com",
-        password: "totototo",
+        user: {
+          name: "Itsme",
+          email: "mail.me@gmail.com",
+          password: "MyPass12" 
+        },
         msg: "",
     };
   },
@@ -25,11 +27,11 @@ export default {
       ...mapActions("account", ["login", "register"]),
 
       eventLogin() {
-          this.login(this.email, this.password);
+          this.login(this.user);
       },
 
       eventRegister() {
-          this.register(this.pseudo, this.email, this.password);
+          this.register(this.user);
       }
   },
 
