@@ -1,54 +1,72 @@
 <template>
 
-  <div class="newList" v-if="idList === '0'">
+  <!--Créer une liste --> 
+  <div class="newList">
+      
       <input type="text" v-model="newList" placeholder="Ajouter une liste">
-      <router-link :to="'/home/' + getSize">
+      <router-link :to="'/home/0'">
         <button @click="eventAddList">Ajouter</button>
       </router-link>
+      
+      <!-- TEST -->
+      <button @click="comp">The test BUTTON</button>
+      
+      
   </div>
 
-
-  <div class="todolist" v-else-if="listExists">
-
-    <h4>{{getTodolistFromId(parseInt(idList)).name}}</h4>
-
-    <div class="newTodo">
-      <input type="text" v-model="newTodo" placeholder="Ajouter une tâche">
-      <button @click="eventAddTodo">Ajouter</button>
+  <!--Affiche les listes -->
+  <div class="displayListe">
+    <div v-for="todolist in todolists" v-bind:key="todolist.id"> 
+      {{ todolist.name }} 
+      <router-link :to="'/home/' + todolist.id"> 
+        <button @click="eventDisplayTodos(todolist.id, todolist.name)"> Afficher les todos </button> 
+      </router-link> 
+      <button @click="deleteTodolist(todolist.id)"> Supprimer la liste </button>
     </div>
+  </div>
 
-    <div class="todos">
-      <ul>
-        <li v-for="todo in filteredTodos(parseInt(idList), filter)" v-bind:key="todo">
-          <input type="checkbox" id="todo.name" v-model="todo.isCompleted">
-          <label for="todo.name">{{todo.name}}</label>
-          <button @click="deleteTodo([parseInt(idList), todo.id])">Supprimer</button>
-          </li>
-        </ul>
+  <!-- Affichage des todos -->
+  <div class="displayAddAndTodos" v-if="idList !== '0'">
+
+    <div class="displayTodos">
+      <h4> Liste utilisée: {{idList}} </h4>
+
+      <!-- Creation d'un todo -->
+      <div class="createTodo"> 
+        <input type="text" id="todo_name" placeholder="Ajouter une todo" v-model="todo.name">      
+        <button @click="eventAddTodo(idList)"> Ajouter Todo </button>
       </div>
 
-    <div class="filterButtons">
-      <label type="text">{{countUndoneTodos(parseInt(idList))}} tâche(s) à faire </label>
-      <button @click="change('all')"> Toutes </button>
-      <button @click="change('unchecked')"> À faire </button>
-      <button @click="change('checked')"> Faites </button>
+      <div class="filterButtons">
+        <button @click="change('all')"> Toutes </button>
+        <button @click="change('unchecked')"> À faire </button>
+        <button @click="change('checked')"> Faites </button>
+      </div>
+
+    <div>
+      <ul v-for="todo in filterTodos(filter)" v-bind:key="todo.id"> 
+        <li> {{todo.name}} 
+          <input @click="eventChangeState(todo)" type="checkbox" v-bind:id="todo.id" v-model="todo.completed">
+          <button @click="eventDeleteTodo(todo.id)"> Supprimer </button>
+          <button @click="eventModifNomTodo(todo)"> Modifier </button>
+        </li>
+      </ul>
+    </div>
+
+    </div>
+
+    <div class="modifTodo" v-if="modif === true">
+      <input type="text" :key="todo.id" placeholder="Modifier un nom de todo" v-model="todo.name">
+      <button @click="eventModifTodo(todo)"> Ok </button>
     </div>
 
   </div>
-
-
-  <div class="Erreur" v-else>
-
-    <p>La liste d'identifiant {{idList}} n'existe pas</p>
-
-  </div>
-
 </template>
 
 <script>
 
 import { defineComponent } from 'vue';
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 
 export default defineComponent({
 
@@ -56,9 +74,18 @@ export default defineComponent({
 
   data() {
     return {
-      newTodo: '',
+      currentList: "",
+      modif: false,
       newList: '',
       filter: 'all',
+
+      todo: {
+        id: null,
+        name: "",
+        completed: false,
+        todolist_id: null
+      },
+
     }
   },
 
@@ -69,34 +96,69 @@ export default defineComponent({
     }
   },
 
+  mounted() {
+    this.fetchTodolists();
+  },
+
   methods: {
 
-    ...mapActions("todolist", ["deleteTodo", "addTodo", "addList"]),
+    ...mapActions("todolist", ["fetchTodolists", "fetchTodos", "createTodolist", "deleteTodolist", "createTodo", "deleteTodo", "modifTodo", "completeTodo"]),
 
     change(status) {
       this.filter = status;
     },
 
-    eventAddTodo() {
-      this.addTodo([parseInt(this.idList), this.newTodo]);
-      this.newTodo = "";
+    eventAddList() {
+      this.createTodolist(this.newList);
+      this.newList = "";
     },
 
-    eventAddList() {
-      this.addList(this.newList);
-      this.newList = "";
-    }
+    eventDeleteTodolist(id) {
+      this.deleteTodolist(id);
+    },
+
+    eventAddTodo(id) {
+      this.todo.todolist_id = id;
+      this.createTodo(this.todo);
+    },
+
+    eventDeleteTodo(id) {
+      this.deleteTodo(id);
+    },
+
+    eventDisplayTodos(id, name) {
+      this.currentList = name;
+      this.fetchTodos(id);
+    },
+
+    eventChangeState(todo) {
+      todo.completed = !todo.completed;
+      this.completeTodo(todo);
+    },
+
+    eventModifTodo(todo) {
+      this.modifTodo(todo);
+      this.modif = false;
+    },
+
+    eventModifNomTodo(todo) {
+      this.todo = todo;
+      this.modif = true;
+    },
+
+    tests(todo) {
+      todo.completed = !todo.completed;
+      this.completeTodo(todo);
+    }    
+
+
 
   },
 
   computed: {
 
-    ...mapGetters("todolist", ["getSize", "filteredTodos", "countUndoneTodos", "getTodolistFromId", "getIdLastList"]),
-
-    listExists: function() {
-      return parseInt(this.idList) <= this.getIdLastList && parseInt(this.idList) > 0;
-    }
-
+    ...mapState("todolist", ["todolists", "todos"]),
+    ...mapGetters("todolist", ["getAll", "getMessage", "getTodos", "filterTodos"]),
   },
 
 });

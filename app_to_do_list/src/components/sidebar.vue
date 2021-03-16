@@ -3,7 +3,7 @@
     <nav class="navigation" role="navigation">
       <ul class="navigation-list">
         <li class="navigation-item" v-for="todo in getAll" v-bind:key="todo.id">
-          <router-link :to="'/home/' + todo.id" class="navigation-link">{{ todo.name }} ( {{countUndoneTodos(todo.id)}} )</router-link>
+          <router-link :to="'/home/' + todo.id" class="navigation-link"></router-link>
         </li>
       </ul>
     </nav>

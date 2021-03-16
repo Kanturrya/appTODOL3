@@ -26,7 +26,7 @@ export const login = ({commit}, user) => {
         console.log(error);
     });
 }
-
+//User id 147
 export const fetchUser = ({commit}) => {
     axios.get(`http://138.68.74.39/api/user`, {
         headers: {
