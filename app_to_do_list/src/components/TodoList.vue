@@ -1,17 +1,11 @@
 <template>
 
   <!--Créer une liste --> 
-  <div class="newList">
-      
+  <div class="newList">    
       <input type="text" v-model="newList" placeholder="Ajouter une liste">
       <router-link :to="'/home/0'">
         <button @click="eventAddList">Ajouter</button>
       </router-link>
-      
-      <!-- TEST -->
-      <button @click="comp">The test BUTTON</button>
-      
-      
   </div>
 
   <!--Affiche les listes -->
@@ -25,6 +19,11 @@
     </div>
   </div>
 
+  <!--Message pour l'utilisateur et pas que-->
+  <div>
+    <h4>{{getMessage}}</h4>
+  </div>
+
   <!-- Affichage des todos -->
   <div class="displayAddAndTodos" v-if="idList !== '0'">
 
@@ -33,7 +32,7 @@
 
       <!-- Creation d'un todo -->
       <div class="createTodo"> 
-        <input type="text" id="todo_name" placeholder="Ajouter une todo" v-model="todo.name">      
+        <input type="text" v-bind:id="todo.id" placeholder="Ajouter une todo" v-model="todo.name">      
         <button @click="eventAddTodo(idList)"> Ajouter Todo </button>
       </div>
 
@@ -56,8 +55,9 @@
     </div>
 
     <div class="modifTodo" v-if="modif === true">
-      <input type="text" :key="todo.id" placeholder="Modifier un nom de todo" v-model="todo.name">
-      <button @click="eventModifTodo(todo)"> Ok </button>
+      <input type="text" :key="todoChange.id" placeholder="Modifier un nom de todo" v-model="todoChange.name">
+      <button @click="eventModifTodo(todoChange)"> Ok </button>
+      <button @click="eventStopModif"> Annuler </button>
     </div>
 
   </div>
@@ -86,6 +86,13 @@ export default defineComponent({
         todolist_id: null
       },
 
+      todoChange: {
+        id: null,
+        name: "",
+        completed: false,
+        todolist_id: null
+      }
+
     }
   },
 
@@ -102,7 +109,7 @@ export default defineComponent({
 
   methods: {
 
-    ...mapActions("todolist", ["fetchTodolists", "fetchTodos", "createTodolist", "deleteTodolist", "createTodo", "deleteTodo", "modifTodo", "completeTodo"]),
+    ...mapActions("todolist", ["fetchTodolists", "fetchTodos", "createTodolist", "deleteTodolist", "createTodo", "deleteTodo", "modifTodo", "completeTodo", "refreshTodos"]),
 
     change(status) {
       this.filter = status;
@@ -120,6 +127,8 @@ export default defineComponent({
     eventAddTodo(id) {
       this.todo.todolist_id = id;
       this.createTodo(this.todo);
+      this.todo.name = "";
+      this.todolist_id = null;
     },
 
     eventDeleteTodo(id) {
@@ -127,6 +136,7 @@ export default defineComponent({
     },
 
     eventDisplayTodos(id, name) {
+      this.refreshTodos();
       this.currentList = name;
       this.fetchTodos(id);
     },
@@ -142,8 +152,12 @@ export default defineComponent({
     },
 
     eventModifNomTodo(todo) {
-      this.todo = todo;
+      this.todoChange = todo;
       this.modif = true;
+    },
+
+    eventStopModif() {
+      this.modif = false;
     },
 
     tests(todo) {

@@ -1,5 +1,10 @@
 import axios from "axios";
 
+//Refresh la liste
+export function refreshTodos(context) {
+    context.commit('SET_TODOS_REF');
+}
+
 //Retourne les listes du user
 export const fetchTodolists = ({commit}) => {
     axios.get(`http://138.68.74.39/api/todolists`,{
@@ -65,9 +70,11 @@ export const createTodo =({commit}, todo) => {
         }
     })
     .then(response => {
+        console.log(response.data);
         commit('SET_TODOS_ADD', response.data);
         commit('SET_MSG', response.data.message);
     }).catch((error) => {
+        console.log(error.response);
         commit('SET_MSG', error.response.data.message);
     });
 }

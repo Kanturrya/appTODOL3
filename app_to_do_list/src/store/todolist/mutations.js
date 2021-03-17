@@ -1,3 +1,7 @@
+export function SET_TODOS_REF(state) {
+    state.todos = [];
+}
+
 export function SET_TOKEN_TODOLISTS(state, token_todolists) {
     state.token_todolists = token_todolists;
 }
