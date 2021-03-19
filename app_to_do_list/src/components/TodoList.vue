@@ -1,24 +1,5 @@
 <template>
 
-  <!--Créer une liste --> 
-  <div class="newList">    
-      <input type="text" v-model="newList" placeholder="Ajouter une liste">
-      <router-link :to="'/home/0'">
-        <button @click="eventAddList">Ajouter</button>
-      </router-link>
-  </div>
-
-  <!--Affiche les listes -->
-  <div class="displayListe">
-    <div v-for="todolist in todolists" v-bind:key="todolist.id"> 
-      {{ todolist.name }} 
-      <router-link :to="'/home/' + todolist.id"> 
-        <button @click="eventDisplayTodos(todolist.id, todolist.name)"> Afficher les todos </button> 
-      </router-link> 
-      <button @click="deleteTodolist(todolist.id)"> Supprimer la liste </button>
-    </div>
-  </div>
-
   <!--Message pour l'utilisateur et pas que-->
   <div>
     <h4>{{getMessage}}</h4>
@@ -115,11 +96,6 @@ export default defineComponent({
       this.filter = status;
     },
 
-    eventAddList() {
-      this.createTodolist(this.newList);
-      this.newList = "";
-    },
-
     eventDeleteTodolist(id) {
       this.deleteTodolist(id);
     },
@@ -133,12 +109,6 @@ export default defineComponent({
 
     eventDeleteTodo(id) {
       this.deleteTodo(id);
-    },
-
-    eventDisplayTodos(id, name) {
-      this.refreshTodos();
-      this.currentList = name;
-      this.fetchTodos(id);
     },
 
     eventChangeState(todo) {
@@ -194,5 +164,8 @@ li {
 }
 a {
   color: #42b983;
+}
+.displayAddAndTodos {
+  width: 70%;
 }
 </style>
