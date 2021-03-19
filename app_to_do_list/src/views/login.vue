@@ -1,40 +1,39 @@
 <template>
   <div>
     <h1>Connexion</h1>
-    <input type="text" placeholder="Pseudo" v-model="username" />
-    <input type="text" placeholder="Mot de passe" v-model="password" />
-    <router-link :to="'/home'"> <button>Connexion</button> </router-link>
-    <router-link :to="'/SignUp'"> <button>S'inscrire</button> </router-link>
+    <input type="text" placeholder="Mail" v-model="this.user.email" />
+    <input type="text" placeholder="Mot de passe" v-model="this.user.password" />
+    <button @click="eventLogin">Connexion</button>
+    <button @click="eventRegister">S'inscrire</button>
     <p v-if="msg">{{ msg }}</p>
   </div>
 </template>
 <script>
 //import { auth } from '';   Il faudra ajouter un fichier d'authentification
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      username: "",
-      password: "",
-      msg: "",
+        user: {
+          name: "Itsme",
+          email: "mail.me@gmail.com",
+          password: "MyPass12" 
+        },
+        msg: "",
     };
   },
+
   methods: {
-    async login() {
-      try {
-        /*const credentials = {
-          username: this.username,
-          password: this.password,
-        };
-        const response = await auth.login(credentials);
-        this.msg = response.msg;
-        const token = response.token;
-        const user = response.user;
-        this.$store.dispatch('login', { token, user });
-        this.$router.push('/');*/
-      } catch (error) {
-        //this.msg = error.response.data.msg;
+      ...mapActions("account", ["login", "register"]),
+
+      eventLogin() {
+          this.login(this.user);
+      },
+
+      eventRegister() {
+          this.register(this.user);
       }
-    },
   },
+
 };
-</script>
+</script> 

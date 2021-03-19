@@ -1,6 +1,4 @@
-export default function() {
-    return {
-        token: '',
-        user: {}
-    };
+export default {
+    token: "",
+    user: {}
 }

@@ -1,15 +1,15 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Home from '../views/home.vue';
 import Login from '../views/login.vue';
-import SignUp from '../views/SignUp.vue';
 
-let routes = [
+const routes = [
   {
     path: '/',
     redirect: '/login'
   },
   {
     path: '/home',
+    name: 'HomeBase',
     redirect: '/home/0'
   },
   {
@@ -22,15 +22,11 @@ let routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  },
-  {
-    path: '/SignUp',
-    name: 'SignUp',
-    component: SignUp
   }
 ];
 
 export const router = new createRouter({
-  history: createWebHistory(),
   routes,
+  history: createWebHistory(),
+  
 });

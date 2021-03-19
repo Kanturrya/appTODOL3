@@ -1,6 +1,10 @@
 <template>
-  <sidebar @change-selected-list="selectList"></sidebar>
-  <todolist :idList="idList"></todolist>
+  <h1>TodoList</h1>
+  <div class="todoPage">
+    <sidebar @change-selected-list="selectList"></sidebar>
+    <todolist :idList="idList"></todolist>
+  </div>
+  
 </template>
 
 <script>
@@ -36,6 +40,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+.todoPage {
+  display: flex;
 }
 </style>
