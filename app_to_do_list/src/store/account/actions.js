@@ -38,3 +38,7 @@ export const fetchUser = ({commit}) => {
         commit('SET_USER', response.data);
     });
 }
+
+export const logout = ({commit}) => {
+    commit('RESET', '');
+}
