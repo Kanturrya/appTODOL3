@@ -22,3 +22,13 @@ export const filterTodos = (state) => (filter) => {
         return state.todos;
     }
 }
+
+export const remainingTodos = (state) => {
+    var i = 0
+    state.todolists.forEach(list => {
+        console.log(list.name)
+        i = i + list.todos.filter(todo => !todo.completed).length
+    });
+    return i
+
+}

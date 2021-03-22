@@ -1,15 +1,24 @@
 <template>
-  <div>
+  <div class="box">
     <h1>Connexion</h1>
-    <input type="text" placeholder="Mail" v-model="this.user.email" />
-    <input type="text" placeholder="Mot de passe" v-model="this.user.password" />
-    <button @click="eventLogin">Connexion</button>
-    <button @click="eventRegister">S'inscrire</button>
-    <p v-if="msg">{{ msg }}</p>
+      <div class="login-box">
+        <label><b>Mail</b></label>
+        <input type="text" placeholder="Mail" v-model="this.user.email" />
+      </div>
+      <div class="login-box">
+        <label><b>Mot de passe</b></label>
+        <input type="text" placeholder="Mot de passe" v-model="this.user.password" />
+      </div>
+      <div class="connexionButton">
+        <button @click="eventLogin">Connexion</button>
+      </div>
+      <div class="signupButton">
+        <button @click="eventRegister">S'inscrire</button>
+      </div>
+        <p v-if="msg">{{ msg }}</p>
   </div>
 </template>
 <script>
-//import { auth } from '';   Il faudra ajouter un fichier d'authentification
 import { mapActions } from "vuex";
 export default {
   data() {
@@ -36,4 +45,99 @@ export default {
   },
 
 };
-</script> 
+</script>
+
+<style>
+  html {
+    height: 100%;
+  }
+
+  body {
+    margin:0;
+    padding:0;
+    font-family: sans-serif;
+    background: #141e30;
+  }
+
+  .box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    padding: 40px;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,.5);
+    box-sizing: border-box;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
+  }
+
+  .box h1 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+  }
+
+  .box .login-box {
+    position: relative;
+  }
+
+  .box .login-box input {
+    width: 100%;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 30px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+  }
+
+  .box .login-box label {
+    top:0;
+    left: 0;
+    padding: 10px 0;
+    font-size: 16px;
+    color: #fff;
+    pointer-events: none;
+  }
+
+  .box button {
+    box-sizing: border-box;
+    appearance: none;
+    background-color: transparent;
+    border-radius: 0.6em;
+    cursor: pointer;
+    align-self: center;
+    font-size: 14px;
+    padding: 0.4em 2em;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .connexionButton button {
+    border: 2px solid #2ecc71;
+    color: #2ecc71;
+    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+  }
+
+  .signupButton button {
+    transform: translate(150%, -100%);
+    border: 2px solid #f1c40f;
+    color: #f1c40f;
+    transition: box-shadow 300ms ease-in-out, color 300ms ease-in-out;
+  }
+
+  .connexionButton :hover {
+    box-shadow: 0 0 40px 40px #2ecc71 inset;
+    color: #fff;
+  }
+
+  .signupButton :hover {
+    box-shadow: 0 0 40px 40px #f1c40f inset;
+    color: #fff;
+  }
+</style>

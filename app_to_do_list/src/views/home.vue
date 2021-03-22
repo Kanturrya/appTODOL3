@@ -34,12 +34,10 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
+h1 {
+  color: #fff;
   text-align: center;
-  color: #2c3e50;
 }
 
 .todoPage {
