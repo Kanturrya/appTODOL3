@@ -1,6 +1,5 @@
-export function getAll() {
-    return JSON.parse(localStorage.getItem('todolists'));
-    //    return state.todolists;
+export function getAll(state) {
+    return state.todolists;
 }
 
 export function getMessage(state) {
