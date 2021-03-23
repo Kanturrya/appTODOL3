@@ -13,7 +13,6 @@ export const fetchTodolists = ({commit}) => {
         }
     })
     .then(response => {
-        console.log(response.data);
         localStorage.setItem('todolists', JSON.stringify(response.data));
         commit('SET_TODOLISTS', response.data);
     }).catch((error) => {
@@ -46,7 +45,6 @@ export const createTodolist = ({commit}, name) => {
         let todolists = JSON.parse(localStorage.getItem('todolists'));
         response.data.nb_todos = 0;
         response.data.todos = [];
-        console.log(response.data)
         todolists.push(response.data);
         localStorage.setItem('todolists', JSON.stringify(todolists));
         commit('SET_TODOLISTS_ADD', response.data);
@@ -55,7 +53,7 @@ export const createTodolist = ({commit}, name) => {
     });
 }
 
-//Pour supprimer une todolist 
+//Pour supprimer une todolist
 export const deleteTodolist = ({commit}, id) => {
     axios.delete(`http://138.68.74.39/api/todolist/`+id, {
         headers: {
@@ -87,7 +85,7 @@ export const createTodo =({commit}, todo) => {
         response.data.completed = 0;
         todolists[index].todos.push(response.data);
         todolists[index].nb_todos = todolists[index].nb_todos + 1;
-        localStorage.setItem('todolists', JSON.stringify(todolists)); 
+        localStorage.setItem('todolists', JSON.stringify(todolists));
         commit('SET_TODOS_ADD', response.data);
         commit('SET_MSG', response.data.message);
     }).catch((error) => {

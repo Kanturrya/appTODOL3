@@ -32,3 +32,7 @@ export const remainingTodos = (state) => {
     return i
 
 }
+
+export const getNameList = (state) => (idList) => {
+  return state.todolists[state.todolists.findIndex(todolist => todolist.id == idList)].name;
+}

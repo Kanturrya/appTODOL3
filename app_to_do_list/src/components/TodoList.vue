@@ -2,7 +2,7 @@
   <!-- Affichage des todos -->
   <div class="displayAddAndTodos" v-if="idList !== '0'">
     <div class="displayTodos">
-      <h4>ID de la liste : {{ idList }}</h4>
+      <h4> {{ this.getNameList(idList) }} </h4>
 
       <!-- Creation d'un todo -->
       <div class="createTodo">
@@ -11,6 +11,7 @@
           v-bind:id="todo.id"
           placeholder="Ajouter une todo"
           v-model="todo.name"
+          @keyup.enter="eventAddTodo(idList)"
         />
         <div class="createButton">
           <button @click="eventAddTodo(idList)">Ajouter Todo</button>
@@ -129,6 +130,7 @@ export default defineComponent({
 
     eventDeleteTodolist(id) {
       this.deleteTodolist(id);
+      this.fetchTodolists();
     },
 
     eventAddTodo(id) {
@@ -136,21 +138,27 @@ export default defineComponent({
       this.createTodo(this.todo);
       this.todo.name = "";
       this.todolist_id = null;
+      this.fetchTodos(this.idList);
+      this.fetchTodolists();
     },
 
     eventDeleteTodo(id) {
       this.deleteTodo(id);
+      this.fetchTodos(this.idList);
+      this.fetchTodolists();
     },
 
     eventChangeState(todo) {
       todo.completed = !todo.completed;
       this.completeTodo(todo);
+      this.fetchTodos(this.idList);
+      this.fetchTodolists();
     },
 
     eventModifTodo(todo) {
       this.modifTodo(todo);
       this.modif = false;
-      this.fetchTodos(todo.todolist_id);
+      this.fetchTodos(this.idList);
     },
 
     eventModifNomTodo(todo) {
@@ -165,10 +173,6 @@ export default defineComponent({
       this.modif = false;
     },
 
-    tests(todo) {
-      todo.completed = !todo.completed;
-      this.completeTodo(todo);
-    },
   },
 
   computed: {
@@ -178,6 +182,7 @@ export default defineComponent({
       "getMessage",
       "getTodos",
       "filterTodos",
+      "getNameList",
     ]),
   },
 });

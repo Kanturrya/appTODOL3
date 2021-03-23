@@ -5,12 +5,12 @@
       <input type="button" value="Déconnexion" @click="eventLogout" />
     </div>
   </div>
-  
+
   <div class="todoPage">
     <sidebar @change-selected-list="selectList"></sidebar>
     <todolist :idList="idList"></todolist>
   </div>
-  
+
 </template>
 
 <script>
@@ -34,14 +34,14 @@ export default {
 
   methods: {
     selectList: function (id) {
-      console.log("select liste : " + id)
+      console.log("select liste : " + id);
     },
 
     ...mapActions("account", ["logout"]),
 
     eventLogout() {
-      this.logout
-      this.$router.push('/login')
+      this.logout();
+      this.$router.push('/login');
     },
   },
 };

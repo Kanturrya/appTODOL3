@@ -15,9 +15,9 @@ export const register = ({commit}, user) => {
 }
 
 export const login = ({commit}, user) => {
-    
+
     axios.post(`http://138.68.74.39/api/login`, user)
-    .then(response => { 
+    .then(response => {
         console.log(response.data);
         commit('SET_TOKEN', response.data.token);
         localStorage.setItem('token', response.data.token);
@@ -40,5 +40,8 @@ export const fetchUser = ({commit}) => {
 }
 
 export const logout = ({commit}) => {
-    commit('RESET', '');
+    localStorage.removeItem('token');
+    localStorage.removeItem('todolists');
+    commit('SET_USER', '');
+    commit('SET_TOKEN', '');
 }

@@ -35,8 +35,8 @@ export default {
     return {
       user: {
         name: "Itsme",
-        email: "mail.me@gmail.com",
-        password: "MyPass12",
+        email: "",
+        password: "",
       },
       msg: "",
     };

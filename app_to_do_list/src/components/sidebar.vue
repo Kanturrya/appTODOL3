@@ -6,7 +6,7 @@
       </div>
       <!--Créer une liste -->
       <div class="newList">
-        <input type="text" v-model="newList" placeholder="Ajouter une liste" />
+        <input type="text" v-model="newList" placeholder="Ajouter une liste" @keyup.enter="eventAddList"/>
         <router-link class="add" :to="'/home/0'">
           <button @click="eventAddList">Ajouter</button>
         </router-link>
@@ -25,9 +25,11 @@
                 à faire )
               </p>
             </router-link>
-            <div class="delete">
-              <button @click="deleteTodolist(todo.id)">Supprimer</button>
-            </div>
+            <router-link :to="'/home/' + 0" class="navigation-link">
+              <div class="delete">
+                <button @click="deleteTodolist(todo.id)">Supprimer</button>
+              </div>
+            </router-link>
           </li>
         </ul>
       </div>
