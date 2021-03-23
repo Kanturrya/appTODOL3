@@ -40,8 +40,7 @@ export function SET_TODOS_MOD(state, todo) {
     let index = state.todos.map(_todo => {
         return _todo.id;
     }).indexOf(todo.id);
-    state.todos.splice(index, todo);
-    console.log(state.todos);
+    state.todos[index] = todo;
 }
 
 export function SET_MSG(state, message) {

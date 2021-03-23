@@ -1,5 +1,6 @@
-export function getAll(state) {
-    return state.todolists;
+export function getAll() {
+    return JSON.parse(localStorage.getItem('todolists'));
+    //    return state.todolists;
 }
 
 export function getMessage(state) {
@@ -24,7 +25,7 @@ export const filterTodos = (state) => (filter) => {
 }
 
 export const remainingTodos = (state) => {
-    var i = 0
+    let i = 0
     state.todolists.forEach(list => {
         console.log(list.name)
         i = i + list.todos.filter(todo => !todo.completed).length
@@ -34,5 +35,10 @@ export const remainingTodos = (state) => {
 }
 
 export const getNameList = (state) => (idList) => {
-  return state.todolists[state.todolists.findIndex(todolist => todolist.id == idList)].name;
+    if (state.todolists[state.todolists.findIndex(todolist => todolist.id == idList)] == undefined) {
+        let todolists = JSON.parse(localStorage.getItem('todolists'));
+        return todolists[todolists.findIndex(todolist => todolist.id == idList)];
+    } else {
+        return state.todolists[state.todolists.findIndex(todolist => todolist.id == idList)].name;
+    }
 }

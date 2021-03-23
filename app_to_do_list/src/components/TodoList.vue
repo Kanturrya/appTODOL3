@@ -153,12 +153,14 @@ export default defineComponent({
       this.completeTodo(todo);
       this.fetchTodos(this.idList);
       this.fetchTodolists();
+      this.fetchTodolists();
     },
 
     eventModifTodo(todo) {
       this.modifTodo(todo);
       this.modif = false;
       this.fetchTodos(this.idList);
+      this.fetchTodolists();
     },
 
     eventModifNomTodo(todo) {

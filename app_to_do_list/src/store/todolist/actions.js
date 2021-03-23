@@ -82,7 +82,7 @@ export const createTodo =({commit}, todo) => {
     .then(response => {
         let todolists = JSON.parse(localStorage.getItem('todolists'));
         let index = todolists.findIndex(todolist => todolist.id == response.data.todolist_id);
-        response.data.completed = 0;
+        response.data.completed = false;
         todolists[index].todos.push(response.data);
         todolists[index].nb_todos = todolists[index].nb_todos + 1;
         localStorage.setItem('todolists', JSON.stringify(todolists));
@@ -123,14 +123,11 @@ export const completeTodo = ({commit}, todo) => {
         }
     })
     .then(response => {
+        console.log(response.data);
         let todolists = JSON.parse(localStorage.getItem('todolists'));
         let indexList = todolists.findIndex(todolist => todolist.id == response.data.todolist_id);
         let indexTodo = todolists[indexList].todos.findIndex(todo => todo.id == response.data.id);
-        if (todolists[indexList].todos[indexTodo].completed == 0) {
-            todolists[indexList].todos[indexTodo].completed = 1;
-        } else {
-            todolists[indexList].todos[indexTodo].completed = 0;
-        }
+        todolists[indexList].todos[indexTodo].completed = ! todolists[indexList].todos[indexTodo].completed;
         localStorage.setItem('todolists', JSON.stringify(todolists));
         commit('SET_TODOS_MOD', response.data);
     }).catch((error) => {
@@ -140,7 +137,6 @@ export const completeTodo = ({commit}, todo) => {
 
 //Pour modifier un todo
 export const modifTodo = ({commit}, todo) => {
-    console.log(todo.id, todo.name, todo.completed, todo.todolist_id);
     axios.patch(`http://138.68.74.39/api/todo/`+todo.id, todo, {
         headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
